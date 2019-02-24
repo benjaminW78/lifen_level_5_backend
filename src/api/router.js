@@ -2,11 +2,10 @@ const Express = require('express')
 
 const { hireWorker, updateWorker, workersList, fireWorker } = require('./workers')
 const { pricingDaysList, updatePricingDays, pricingStatusList } = require('./pricing')
-const { createShift, shiftsList, updateShift, deleteShift, allShiftForUser } = require('./shifts')
+const { createShift, shiftsList, updateShift, deleteShift, allShiftForUser, allShiftFee } = require('./shifts')
 
 const workersRouter = Express.Router()
 const pricing = Express.Router()
-const pricingStatus = Express.Router()
 const pricingDays = Express.Router()
 const shifts = Express.Router()
 
@@ -20,11 +19,11 @@ function init(app) {
         .delete('/:id', fireWorker)
     pricingDays.get('/', pricingDaysList)
         .put('/:id', updatePricingDays)
-    pricingStatus
-        .get('/', pricingStatusList)
+
 
     pricing.use('/days', pricingDays)
-    pricing.use('/status', pricingStatus)
+    pricing.use('/status', pricingStatusList)
+    pricing.use('/fee', allShiftFee)
 
     shifts
         .get('/', shiftsList)

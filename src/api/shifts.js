@@ -37,3 +37,11 @@ exports.allShiftForUser = (req, res) => {
         .then(result => res.status(200).send(result))
         .catch(err => res.status(400).send(err))
 }
+
+exports.allShiftFee = (req, res) => {
+    Shifts.getShiftsFee()
+        .then(fee => {
+            return res.status(200).send({ fee })
+        })
+        .catch(err => res.status(400).send(err))
+}

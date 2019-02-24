@@ -99,3 +99,18 @@ exports.getAllShifts = () => {
         throw 'something went wrong at shift get list'
     }
 }
+
+
+exports.getShiftsFee = () => {
+    try {
+        return Model.get().then((data) => {
+            let pdg_fee = 0
+            //important formula which extract a additionnal fee from 5% on every shifts price
+            data.forEach(item => pdg_fee += (item.shift_price * 5) / 100)
+            return pdg_fee
+        })
+    } catch (err) {
+        console.log(err)
+        throw 'something went wrong at getShiftsFee get'
+    }
+}
