@@ -16,6 +16,11 @@ connectDb()
             .use(BodyParser.json({ limit: '50mb' })) // Parse application/json
             .use(BodyParser.urlencoded({ limit: '50mb', extended: true })) // Parse application/x-www-form-urlencoded
             .use(Compression())
+            .use((req, res, next) => {
+                res.header('Access-Control-Allow-Origin', '*')
+                res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+                next()
+            })
 
         Router.init(app)
 

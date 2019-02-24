@@ -3,10 +3,11 @@ const Shifts = require('../modules/shifts')
 
 exports.createShift = (req, res) => {
     const workerToCreate = req.body
-    console.log(workerToCreate)
     Shifts.createOne(workerToCreate)
         .then(result => res.status(200).send(result))
-        .catch(err => res.status(400).send(err))
+        .catch(err => {
+            return res.status(400).send(err)
+        })
 }
 
 exports.shiftsList = (req, res) => {

@@ -10,7 +10,7 @@ const schema = new Mongoose.Schema({
         enum: WORKERS_STATUS.map(item => item.name),
         index: true
     },
-    shift_price: { type: Mongoose.Schema.Types.Number, required: true, default: 0 }
+    shift_price_per_day: { type: Mongoose.Schema.Types.Number, required: true, default: 0 }
 }, { versionKey: false })
 
 Database.forceValidators('workers', schema)

@@ -2,7 +2,6 @@ const Workers = require('../modules/workers')
 
 exports.hireWorker = (req, res) => {
     const workerToCreate = req.body
-    console.log(workerToCreate)
     Workers.createUser(workerToCreate)
         .then(result => res.status(200).send(result))
         .catch(err => res.status(400).send(err))
@@ -11,7 +10,6 @@ exports.hireWorker = (req, res) => {
 exports.updateWorker = (req, res) => {
     const fieldsToUpdate = req.body
     const workerId = req.params.id
-    console.log(fieldsToUpdate)
     Workers.updateUser(workerId, fieldsToUpdate)
         .then(result => res.status(200).send(result))
         .catch(err => res.status(400).send(err))

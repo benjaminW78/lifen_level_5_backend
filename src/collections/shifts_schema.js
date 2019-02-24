@@ -11,7 +11,8 @@ const schema = new Mongoose.Schema({
     },
     start_date: { type: Mongoose.Schema.Types.Date, required: true, index: true },
     end_date: { type: Mongoose.Schema.Types.Date, required: true, index: true },
-    allow_overlap: { type: Mongoose.Schema.Types.Boolean, default: true }
+    allow_overlap: { type: Mongoose.Schema.Types.Boolean, default: true },
+    shift_price: { type: Mongoose.Schema.Types.Number, required: true }
 }, { versionKey: false })
 
 Database.forceValidators('shifts', schema)
@@ -37,10 +38,10 @@ exports.delete = (id) => shifts.deleteOne({ _id: id })
  */
 exports.get = (id = null) => {
     let payload = { _id: id }
-    if (id !== null) {
+    if (id === null) {
         payload = {}
     }
-    return shifts.find(payload).lean()
+    return shifts.find(payload).sort({ start_date: 1, end_date: 1 }).lean()
 }
 exports.getAllShiftForUser = (userId) => {
     let payload = { user_id: userId }
@@ -48,7 +49,6 @@ exports.getAllShiftForUser = (userId) => {
 }
 
 exports.findShiftsInInterval = (dateStart, dateEnd) => {
-    console.log(dateStart, dateEnd)
     return shifts.find({
         $or: [
             { $and: [{ start_date: { $gte: new Date(dateStart) } }, { start_date: { $lte: new Date(dateEnd) } }] },

@@ -14,7 +14,7 @@ const schema = new Mongoose.Schema({
     'price_multiplier': {
         type: Number,
         required: true,
-        default: 0,
+        default: 1,
         index: true
     }
 }, { versionKey: false })
@@ -29,6 +29,6 @@ days.find({}).then(async items => {
     }
 })
 
-exports.get = () => days.find({})
+exports.get = () => days.find({}).lean()
 
 exports.update = (id, price_multiplier) => days.findOneAndUpdate({ '_id': id }, { $set: price_multiplier }, { new: true })
