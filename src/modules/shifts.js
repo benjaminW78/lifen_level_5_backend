@@ -1,4 +1,5 @@
 const Model = require('../collections/shifts_schema')
+const Workers = require('./workers')
 const Moment = require('moment')
 const MomentRange = require('moment-range')
 const pricingDays = require('./pricing')
@@ -103,10 +104,21 @@ exports.getAllShifts = () => {
 
 exports.getShiftsFee = () => {
     try {
-        return Model.get().then((data) => {
+        return Model.get().then(async (data) => {
+            const workers = await  Workers.getAllUsers()
+            const mappedWorkers = workers.reduce((acc, worker) => {
+                acc[worker._id] = worker
+                return acc
+            }, {})
             let pdg_fee = 0
             //important formula which extract a additionnal fee from 5% on every shifts price
-            data.forEach(item => pdg_fee += (item.shift_price * 5) / 100)
+            // and add 80 euros on pdg fee for every interim workers used for a shift
+            data.forEach(item => {
+                if (mappedWorkers[item.user_id]) {
+                    pdg_fee += 80
+                }
+                pdg_fee += (item.shift_price * 5) / 100
+            })
             return pdg_fee
         })
     } catch (err) {
